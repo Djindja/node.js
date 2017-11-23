@@ -7,7 +7,7 @@ const { catchErrors } = require('../handlers/errorHandlers');
 
 router.get('/', catchErrors(storeController.getStores));
 router.get('/stores', catchErrors(storeController.getStores));
-router.get('/add', storeController.addStore);
+router.get('/add', authController.isLoggedIn, storeController.addStore);
 
 router.post('/add',
   storeController.upload,
@@ -29,6 +29,7 @@ router.get('/tags', catchErrors(storeController.getStoresByTag));
 router.get('/tags/:tag', catchErrors(storeController.getStoresByTag));
 
 route.get('/login', userController.loginForm);
+router.post('/login', authController.login);
 route.get('/register', userController.registerForm);
 
 // 1. Validate the registratio data
@@ -39,5 +40,7 @@ route.post('/register',
   userController.register,
   authController.login
 );
+
+rotuer.get('/logout', authController.logout);
 
 module.exports = router;
